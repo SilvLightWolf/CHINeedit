@@ -1,10 +1,10 @@
-package com.mitologia.function;
+package com.mitologia.chin.function;
 
 import com.laytonsmith.PureUtilities.SimpleVersion;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.Static;
-import com.laytonsmith.core.constructs.CString;
+import com.laytonsmith.core.constructs.CVoid;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.CommandHelperEnvironment;
@@ -14,14 +14,15 @@ import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
 import org.bukkit.entity.Player;
+import org.bukkit.map.MapView;
 
 @api
-public class player_locale extends AbstractFunction {
+public class Respawn extends AbstractFunction {
 
     @SuppressWarnings("unchecked")
     @Override
     public Class<? extends CREThrowable>[] thrown() {
-        return new Class[]{CREException.class };
+        return new Class[]{CREException.class};
     }
 
     @Override
@@ -36,13 +37,15 @@ public class player_locale extends AbstractFunction {
 
     @Override
     public Construct exec(Target target, Environment environment, Construct... constructs) throws ConfigRuntimeException {
+
         Player p;
-        if(constructs.length == 0){
+        if (constructs.length == 0) {
             p = (Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle();
-        }else{
+        } else {
             p = (Player) Static.GetPlayer(constructs[0], target).getHandle();
         }
-        return new CString(p.getLocale(), target);
+        p.spigot().respawn();
+        return CVoid.VOID;
     }
 
     @Override
@@ -52,16 +55,16 @@ public class player_locale extends AbstractFunction {
 
     @Override
     public String getName() {
-        return "player_locale";
+        return "respawn";
     }
 
     @Override
     public Integer[] numArgs() {
-        return new Integer[]{ 0, 1 };
+        return new Integer[]{0, 1};
     }
 
     @Override
     public String docs() {
-        return "String ([player]) get Player's locale.";
+        return "void ([player]) Respawn player.";
     }
 }

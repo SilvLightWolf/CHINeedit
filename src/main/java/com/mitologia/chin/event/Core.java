@@ -1,9 +1,8 @@
-package com.mitologia.event;
+package com.mitologia.chin.event;
 
 import com.laytonsmith.PureUtilities.SimpleVersion;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.annotations.api;
-import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.*;
@@ -11,13 +10,19 @@ import com.laytonsmith.core.events.AbstractEvent;
 import com.laytonsmith.core.events.BindableEvent;
 import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.exceptions.EventException;
+
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
+import com.mitologia.chin.Mapper;
+import com.mitologia.chin.ObjGenerator;
+import com.mitologia.chin.bukkit.MCMapRenderer;
+import com.mitologia.chin.bukkit.MCMapView;
+import com.mitologia.chin.event.Events.*;
+import org.bukkit.map.MapRenderer;
 
-import com.mitologia.event.Events.*;
-
+import java.util.HashMap;
 import java.util.Map;
 
-public class Core  {
+public class Core {
 
     @api
     public static class item_damage extends AbstractEvent {
@@ -54,7 +59,7 @@ public class Core  {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCItemDamageEvent){
+            if (e instanceof MCItemDamageEvent) {
 
                 MCItemDamageEvent ide = (MCItemDamageEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(ide);
@@ -66,7 +71,7 @@ public class Core  {
 
                 return mapEvent;
 
-            }else{
+            } else {
                 throw new EventException("Cannot convert event to PlayerItemDamageEvent.");
             }
         }
@@ -78,8 +83,8 @@ public class Core  {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCItemDamageEvent){
-                if(key.equalsIgnoreCase("damage")){
+            if (event instanceof MCItemDamageEvent) {
+                if (key.equalsIgnoreCase("damage")) {
                     ((MCItemDamageEvent) event).setDamage(Static.getInt32(value, Target.UNKNOWN));
                     return true;
                 }
@@ -124,7 +129,7 @@ public class Core  {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCPlayerRecipeDiscoverEvent){
+            if (e instanceof MCPlayerRecipeDiscoverEvent) {
 
                 MCPlayerRecipeDiscoverEvent prde = (MCPlayerRecipeDiscoverEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(e);
@@ -136,7 +141,7 @@ public class Core  {
 
                 return mapEvent;
 
-            }else{
+            } else {
                 throw new EventException("Cannot convert event to PlayerRecipeDiscoverEvent.");
             }
         }
@@ -186,7 +191,7 @@ public class Core  {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(!(e instanceof MCBlockPhysicsEvent)) {
+            if (!(e instanceof MCBlockPhysicsEvent)) {
                 throw new EventException("Cannot convert event to BlockPhysicsEvent");
             }
 
@@ -246,7 +251,7 @@ public class Core  {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCEntityDropItemEvent) {
+            if (e instanceof MCEntityDropItemEvent) {
 
                 MCEntityDropItemEvent event = (MCEntityDropItemEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
@@ -312,7 +317,7 @@ public class Core  {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCEntityToggleSwimEvent) {
+            if (e instanceof MCEntityToggleSwimEvent) {
 
                 MCEntityToggleSwimEvent event = (MCEntityToggleSwimEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
@@ -374,7 +379,7 @@ public class Core  {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCPigZombieAngerEvent) {
+            if (e instanceof MCPigZombieAngerEvent) {
 
                 MCPigZombieAngerEvent event = (MCPigZombieAngerEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
@@ -398,8 +403,8 @@ public class Core  {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCPigZombieAngerEvent) {
-                if(key.equalsIgnoreCase("anger")) {
+            if (event instanceof MCPigZombieAngerEvent) {
+                if (key.equalsIgnoreCase("anger")) {
                     ((MCPigZombieAngerEvent) event).setNewAnger(Static.getInt32(value, Target.UNKNOWN));
                     return true;
                 }
@@ -444,7 +449,7 @@ public class Core  {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCPlayerRiptideEvent) {
+            if (e instanceof MCPlayerRiptideEvent) {
 
                 MCPlayerRiptideEvent pre = (MCPlayerRiptideEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(e);
@@ -467,6 +472,67 @@ public class Core  {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
+            return false;
+        }
+    }
+
+    @api
+    public static class map_initialize extends AbstractEvent {
+
+        @Override
+        public String getName() {
+            return "map_initialize";
+        }
+
+        @Override
+        public String docs() {
+            return "{}"
+                    + "Called when a map is initialized."
+                    + "{location : where showing}"
+                    + "{}"
+                    + "{}";
+        }
+
+        @Override
+        public Version since() {
+            return new SimpleVersion(1, 0, 0);
+        }
+
+        @Override
+        public boolean matches(Map<String, Construct> map, BindableEvent bindableEvent) throws PrefilterNonMatchException {
+            return true;
+        }
+
+        @Override
+        public BindableEvent convert(CArray cArray, Target target) {
+            return null;
+        }
+
+        @Override
+        public Map<String, Construct> evaluate(BindableEvent bindableEvent) throws EventException {
+            if (bindableEvent instanceof MCMapInitializeEvent) {
+
+                MCMapInitializeEvent e = (MCMapInitializeEvent) bindableEvent;
+                Map<String, Construct> ret = new HashMap<>();
+                Target t = Target.UNKNOWN;
+
+                CArray location = ObjGenerator.getMapView(e.getMap(), t);
+                ret.put("mapview", location);
+
+                return ret;
+
+            } else {
+                throw new EventException("Could not cast to MapInitializeEvent");
+            }
+        }
+
+        @Override
+        public Driver driver() {
+            return Driver.EXTENSION;
+        }
+
+        @Override
+        public boolean modifyEvent(String s, Construct construct, BindableEvent bindableEvent) {
             return false;
         }
     }

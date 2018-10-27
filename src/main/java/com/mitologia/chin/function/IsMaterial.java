@@ -1,4 +1,4 @@
-package com.mitologia.function;
+package com.mitologia.chin.function;
 
 import com.laytonsmith.PureUtilities.SimpleVersion;
 import com.laytonsmith.PureUtilities.Version;
@@ -14,7 +14,7 @@ import com.laytonsmith.core.functions.AbstractFunction;
 import org.bukkit.Material;
 
 @api
-public class is_material extends AbstractFunction {
+public class IsMaterial extends AbstractFunction {
 
     @SuppressWarnings("unchecked")
     @Override
@@ -34,8 +34,8 @@ public class is_material extends AbstractFunction {
 
     @Override
     public Construct exec(Target target, Environment environment, Construct... constructs) throws ConfigRuntimeException {
-        for(Material m : Material.values())
-            if(m.name().equalsIgnoreCase(constructs[0].val()))
+        for (Material m : Material.values())
+            if (m.name().equalsIgnoreCase(constructs[0].val()))
                 return CBoolean.TRUE;
         return CBoolean.FALSE;
     }
@@ -52,7 +52,7 @@ public class is_material extends AbstractFunction {
 
     @Override
     public Integer[] numArgs() {
-        return new Integer[]{ 1 };
+        return new Integer[]{1};
     }
 
     @Override

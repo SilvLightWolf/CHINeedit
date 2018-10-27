@@ -1,4 +1,4 @@
-package com.mitologia.event;
+package com.mitologia.chin.event;
 
 import com.laytonsmith.abstraction.*;
 import com.laytonsmith.abstraction.blocks.MCBlock;
@@ -6,6 +6,7 @@ import com.laytonsmith.abstraction.blocks.MCMaterial;
 import com.laytonsmith.abstraction.entities.MCPigZombie;
 import com.laytonsmith.core.events.BindableEvent;
 import com.laytonsmith.core.constructs.CInt;
+import com.mitologia.chin.bukkit.MCMapView;
 import org.bukkit.NamespacedKey;
 
 
@@ -99,4 +100,9 @@ public class Events {
 
     }
 
+    public interface MCMapInitializeEvent extends BindableEvent {
+
+        MCMapView getMap();
+
+    }
 }

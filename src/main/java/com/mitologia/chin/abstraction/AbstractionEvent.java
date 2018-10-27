@@ -1,4 +1,4 @@
-package com.mitologia.event;
+package com.mitologia.chin.abstraction;
 
 import com.laytonsmith.abstraction.*;
 import com.laytonsmith.abstraction.blocks.MCBlock;
@@ -14,10 +14,8 @@ import com.laytonsmith.abstraction.entities.MCPigZombie;
 import com.laytonsmith.annotations.abstraction;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.Target;
-import com.laytonsmith.core.events.BindableEvent;
-import com.mitologia.event.Events.*;
+import com.mitologia.chin.bukkit.MCMapView;
 import org.bukkit.NamespacedKey;
-import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.EntityToggleSwimEvent;
@@ -26,13 +24,18 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerRecipeDiscoverEvent;
 import org.bukkit.event.player.PlayerRiptideEvent;
 
-public class Abstraction {
+import com.mitologia.chin.event.Events.*;
+import org.bukkit.event.server.MapInitializeEvent;
+
+public class AbstractionEvent {
 
     public static class BukkitMCItemDamageEvent implements MCItemDamageEvent {
 
         PlayerItemDamageEvent pide;
 
-        public BukkitMCItemDamageEvent(PlayerItemDamageEvent e){ this.pide = e; }
+        public BukkitMCItemDamageEvent(PlayerItemDamageEvent e) {
+            this.pide = e;
+        }
 
         @Override
         public CInt getDamage() {
@@ -75,7 +78,9 @@ public class Abstraction {
 
         PlayerRecipeDiscoverEvent prde;
 
-        public BukkitMCPlayerRecipeDiscoverEvent(PlayerRecipeDiscoverEvent e){ this.prde = e; }
+        public BukkitMCPlayerRecipeDiscoverEvent(PlayerRecipeDiscoverEvent e) {
+            this.prde = e;
+        }
 
         @Override
         public NamespacedKey getRecipe() {
@@ -143,8 +148,8 @@ public class Abstraction {
 
         EntityDropItemEvent edie;
 
-        public BukkitMCEntityDropItemEvent(Event e) {
-            this.edie = (EntityDropItemEvent) e;
+        public BukkitMCEntityDropItemEvent(EntityDropItemEvent e) {
+            this.edie = e;
         }
 
         @Override
@@ -178,8 +183,8 @@ public class Abstraction {
 
         EntityToggleSwimEvent etse;
 
-        public BukkitMCEntityToggleSwimEvent(Event e) {
-            this.etse = (EntityToggleSwimEvent) e;
+        public BukkitMCEntityToggleSwimEvent(EntityToggleSwimEvent e) {
+            this.etse = e;
         }
 
         @Override
@@ -212,8 +217,8 @@ public class Abstraction {
 
         PigZombieAngerEvent pzae;
 
-        public BukkitMCPigZombieAngerEvent(Event e) {
-            this.pzae = (PigZombieAngerEvent) e;
+        public BukkitMCPigZombieAngerEvent(PigZombieAngerEvent e) {
+            this.pzae = e;
         }
 
         @Override
@@ -277,6 +282,24 @@ public class Abstraction {
         }
     }
 
+    public static class BukkitMCMapInitializeEvent implements MCMapInitializeEvent {
+
+        MapInitializeEvent mie;
+
+        public BukkitMCMapInitializeEvent(MapInitializeEvent mie) {
+            this.mie = mie;
+        }
+
+        @Override
+        public MCMapView getMap() {
+            return new BukkitMCMapView(mie.getMap());
+        }
+
+        @Override
+        public Object _GetObject() {
+            return mie;
+        }
+    }
 
 
 }
