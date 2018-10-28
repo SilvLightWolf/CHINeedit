@@ -127,7 +127,7 @@ map
     
     @renderer = create_renderer();
     set_renderer(@renderer, closure(@mapview, @mapcanvas, @player){
-      if(@mapview[X] == 0 && @view[Z] == 0){
+      if(@mapview[X] == 0 && @mapview[Z] == 0){
         @jpg = create_image('image.jpg');
         draw_canvas(@mapcanvas[key], 0, 0, @jpg);
       }
