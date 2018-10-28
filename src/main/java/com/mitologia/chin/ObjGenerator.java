@@ -340,8 +340,6 @@ public class ObjGenerator {
 			renderers.push(getMapRenderer(desckey, t), t);
 		}
 
-		System.out.println("renderers : " + ((MapView) mv.getHandle()).getRenderers().size());
-
 		ret.set("renderers", renderers, t);
 		ret.set("X", new CInt(mv.getCenterX(), t), t);
 		ret.set("Z", new CInt(mv.getCenterZ(), t), t);
