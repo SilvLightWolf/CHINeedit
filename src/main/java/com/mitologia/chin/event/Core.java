@@ -3,17 +3,26 @@ package com.mitologia.chin.event;
 import com.laytonsmith.PureUtilities.SimpleVersion;
 import com.laytonsmith.PureUtilities.Vector3D;
 import com.laytonsmith.PureUtilities.Version;
-import com.laytonsmith.abstraction.*;
+import com.laytonsmith.abstraction.MCEntity;
+import com.laytonsmith.abstraction.MCHumanEntity;
+import com.laytonsmith.abstraction.MCInventory;
+import com.laytonsmith.abstraction.MCItemStack;
+import com.laytonsmith.abstraction.MCLivingEntity;
 import com.laytonsmith.abstraction.blocks.MCBlock;
-import com.laytonsmith.abstraction.blocks.MCBlockState;
 import com.laytonsmith.abstraction.blocks.MCMaterial;
 import com.laytonsmith.abstraction.enums.MCDyeColor;
 import com.laytonsmith.abstraction.enums.MCEntityType;
 import com.laytonsmith.annotations.api;
-import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
-import com.laytonsmith.core.constructs.*;
+import com.laytonsmith.core.constructs.CArray;
+import com.laytonsmith.core.constructs.CBoolean;
+import com.laytonsmith.core.constructs.CDouble;
+import com.laytonsmith.core.constructs.CInt;
+import com.laytonsmith.core.constructs.CNull;
+import com.laytonsmith.core.constructs.CString;
+import com.laytonsmith.core.constructs.Construct;
+import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.events.AbstractEvent;
 import com.laytonsmith.core.events.BindableEvent;
 import com.laytonsmith.core.events.Driver;
@@ -25,7 +34,6 @@ import com.laytonsmith.core.exceptions.EventException;
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
 import com.mitologia.chin.ObjGenerator;
 import com.mitologia.chin.bukkit.MCMerchantRecipe;
-import com.mitologia.chin.event.Events.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -68,9 +76,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if (e instanceof MCItemDamageEvent) {
+            if (e instanceof Events.MCItemDamageEvent) {
 
-                MCItemDamageEvent ide = (MCItemDamageEvent) e;
+                Events.MCItemDamageEvent ide = (Events.MCItemDamageEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(ide);
                 Target t = Target.UNKNOWN;
 
@@ -92,9 +100,9 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if (event instanceof MCItemDamageEvent) {
+            if (event instanceof Events.MCItemDamageEvent) {
                 if (key.equalsIgnoreCase("damage")) {
-                    ((MCItemDamageEvent) event).setDamage(Static.getInt32(value, Target.UNKNOWN));
+                    ((Events.MCItemDamageEvent) event).setDamage(Static.getInt32(value, Target.UNKNOWN));
                     return true;
                 }
             }
@@ -138,9 +146,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if (e instanceof MCPlayerRecipeDiscoverEvent) {
+            if (e instanceof Events.MCPlayerRecipeDiscoverEvent) {
 
-                MCPlayerRecipeDiscoverEvent prde = (MCPlayerRecipeDiscoverEvent) e;
+                Events.MCPlayerRecipeDiscoverEvent prde = (Events.MCPlayerRecipeDiscoverEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(e);
                 Target t = Target.UNKNOWN;
 
@@ -200,11 +208,11 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if (!(e instanceof MCBlockPhysicsEvent)) {
+            if (!(e instanceof Events.MCBlockPhysicsEvent)) {
                 throw new EventException("Cannot convert event to BlockPhysicsEvent");
             }
 
-            MCBlockPhysicsEvent event = (MCBlockPhysicsEvent) e;
+            Events.MCBlockPhysicsEvent event = (Events.MCBlockPhysicsEvent) e;
             Target t = Target.UNKNOWN;
             Map<String, Construct> mapEvent = evaluate_helper(event);
 
@@ -260,9 +268,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if (e instanceof MCEntityDropItemEvent) {
+            if (e instanceof Events.MCEntityDropItemEvent) {
 
-                MCEntityDropItemEvent event = (MCEntityDropItemEvent) e;
+                Events.MCEntityDropItemEvent event = (Events.MCEntityDropItemEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -326,9 +334,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if (e instanceof MCEntityToggleSwimEvent) {
+            if (e instanceof Events.MCEntityToggleSwimEvent) {
 
-                MCEntityToggleSwimEvent event = (MCEntityToggleSwimEvent) e;
+                Events.MCEntityToggleSwimEvent event = (Events.MCEntityToggleSwimEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -388,9 +396,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if (e instanceof MCPigZombieAngerEvent) {
+            if (e instanceof Events.MCPigZombieAngerEvent) {
 
-                MCPigZombieAngerEvent event = (MCPigZombieAngerEvent) e;
+                Events.MCPigZombieAngerEvent event = (Events.MCPigZombieAngerEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -412,9 +420,9 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if (event instanceof MCPigZombieAngerEvent) {
+            if (event instanceof Events.MCPigZombieAngerEvent) {
                 if (key.equalsIgnoreCase("anger")) {
-                    ((MCPigZombieAngerEvent) event).setNewAnger(Static.getInt32(value, Target.UNKNOWN));
+                    ((Events.MCPigZombieAngerEvent) event).setNewAnger(Static.getInt32(value, Target.UNKNOWN));
                     return true;
                 }
             }
@@ -458,9 +466,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if (e instanceof MCPlayerRiptideEvent) {
+            if (e instanceof Events.MCPlayerRiptideEvent) {
 
-                MCPlayerRiptideEvent pre = (MCPlayerRiptideEvent) e;
+                Events.MCPlayerRiptideEvent pre = (Events.MCPlayerRiptideEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(e);
                 Target t = Target.UNKNOWN;
 
@@ -519,9 +527,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent bindableEvent) throws EventException {
-            if (bindableEvent instanceof MCMapInitializeEvent) {
+            if (bindableEvent instanceof Events.MCMapInitializeEvent) {
 
-                MCMapInitializeEvent e = (MCMapInitializeEvent) bindableEvent;
+                Events.MCMapInitializeEvent e = (Events.MCMapInitializeEvent) bindableEvent;
                 Map<String, Construct> ret = new HashMap<>();
                 Target t = Target.UNKNOWN;
 
@@ -585,11 +593,11 @@ public class Core {
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
 
-            if(!(e instanceof MCBrewingStandFuelEvent)) {
+            if (!(e instanceof Events.MCBrewingStandFuelEvent)) {
                 throw new EventException("Cannot convert event to BrewingStandFuelEvent");
             }
 
-            MCBrewingStandFuelEvent event = (MCBrewingStandFuelEvent) e;
+            Events.MCBrewingStandFuelEvent event = (Events.MCBrewingStandFuelEvent) e;
             Target t = Target.UNKNOWN;
             Map<String, Construct> mapEvent = evaluate_helper(event);
 
@@ -608,13 +616,13 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCBrewingStandFuelEvent) {
-                MCBrewingStandFuelEvent bsfe = (MCBrewingStandFuelEvent) event;
-                if(key.equalsIgnoreCase("power")) {
+            if (event instanceof Events.MCBrewingStandFuelEvent) {
+                Events.MCBrewingStandFuelEvent bsfe = (Events.MCBrewingStandFuelEvent) event;
+                if (key.equalsIgnoreCase("power")) {
                     bsfe.setFuelPower(Static.getInt32(value, Target.UNKNOWN));
                     return true;
-                } else if(key.equalsIgnoreCase("consuming")) {
-                    bsfe.setConsuming(Static.getBoolean(value));
+                } else if (key.equalsIgnoreCase("consuming")) {
+                    bsfe.setConsuming(Static.getBoolean(value, value.getTarget()));
                     return true;
                 }
             }
@@ -658,16 +666,16 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(!(e instanceof MCBrewEvent)) {
+            if (!(e instanceof Events.MCBrewEvent)) {
                 throw new EventException("Cannot convert event to BrewEvent");
             }
 
-            MCBrewEvent event = (MCBrewEvent) e;
+            Events.MCBrewEvent event = (Events.MCBrewEvent) e;
             Target t = Target.UNKNOWN;
             Map<String, Construct> mapEvent = evaluate_helper(event);
 
             CArray inv = new CArray(t);
-            for(int i = 0; i < event.getContents().getSize(); i++) {
+            for (int i = 0; i < event.getContents().getSize(); i++) {
                 inv.set(i, ObjectGenerator.GetGenerator().item(event.getContents().getItem(i), t), t);
             }
             mapEvent.put("inventory", inv);
@@ -728,11 +736,11 @@ public class Core {
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
 
-            if(!(e instanceof MCCauldronLevelChangeEvent)) {
+            if (!(e instanceof Events.MCCauldronLevelChangeEvent)) {
                 throw new EventException("Cannot convert event to CauldronLevelChangeEvent");
             }
 
-            MCCauldronLevelChangeEvent event = (MCCauldronLevelChangeEvent) e;
+            Events.MCCauldronLevelChangeEvent event = (Events.MCCauldronLevelChangeEvent) e;
             Target t = Target.UNKNOWN;
             Map<String, Construct> mapEvent = evaluate_helper(event);
 
@@ -752,9 +760,9 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCCauldronLevelChangeEvent) {
-                if(key.equalsIgnoreCase("new")) {
-                    ((MCCauldronLevelChangeEvent) event).setNewLevel(Static.getInt32(value, Target.UNKNOWN));
+            if (event instanceof Events.MCCauldronLevelChangeEvent) {
+                if (key.equalsIgnoreCase("new")) {
+                    ((Events.MCCauldronLevelChangeEvent) event).setNewLevel(Static.getInt32(value, Target.UNKNOWN));
                     return true;
                 }
             }
@@ -799,15 +807,15 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(!(e instanceof MCFurnaceBurnEvent)) {
+            if (!(e instanceof Events.MCFurnaceBurnEvent)) {
                 throw new EventException("Cannot convert event to FurnaceBurnEvent");
             }
 
-            MCFurnaceBurnEvent event = (MCFurnaceBurnEvent) e;
+            Events.MCFurnaceBurnEvent event = (Events.MCFurnaceBurnEvent) e;
             Target t = Target.UNKNOWN;
             Map<String, Construct> mapEvent = evaluate_helper(event);
 
-            mapEvent.put("burntime", new CInt(event.getBurnTine(), t));
+            mapEvent.put("burntime", new CInt(event.getBurnTime(), t));
             mapEvent.put("fuel", ObjectGenerator.GetGenerator().item(event.getFuel(), t));
             mapEvent.put("burning", CBoolean.get(event.isBurning()));
             mapEvent.put("location", ObjectGenerator.GetGenerator().location(event.getBlock().getLocation(), false));
@@ -822,13 +830,13 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCFurnaceBurnEvent) {
-                MCFurnaceBurnEvent fbe = (MCFurnaceBurnEvent) event;
-                if(key.equalsIgnoreCase("burntime")) {
+            if (event instanceof Events.MCFurnaceBurnEvent) {
+                Events.MCFurnaceBurnEvent fbe = (Events.MCFurnaceBurnEvent) event;
+                if (key.equalsIgnoreCase("burntime")) {
                     fbe.setBurnTime(Static.getInt32(value, Target.UNKNOWN));
                     return true;
-                } else if(key.equalsIgnoreCase("burning")) {
-                    fbe.setBurning(Static.getBoolean(value));
+                } else if (key.equalsIgnoreCase("burning")) {
+                    fbe.setBurning(Static.getBoolean(value, value.getTarget()));
                     return true;
                 }
             }
@@ -859,7 +867,7 @@ public class Core {
 
         @Override
         public Version since() {
-            return new SimpleVersion(1, 0 , 0);
+            return new SimpleVersion(1, 0, 0);
         }
 
         @Override
@@ -874,11 +882,11 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(!(e instanceof MCFurnaceExtractEvent)) {
+            if (!(e instanceof Events.MCFurnaceExtractEvent)) {
                 throw new EventException("Cannot convert event to FurnaceExtractEvent");
             }
 
-            MCFurnaceExtractEvent event = (MCFurnaceExtractEvent) e;
+            Events.MCFurnaceExtractEvent event = (Events.MCFurnaceExtractEvent) e;
             Target t = Target.UNKNOWN;
             Map<String, Construct> mapEvent = evaluate_helper(event);
 
@@ -899,9 +907,9 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCFurnaceExtractEvent) {
-                if(key.equalsIgnoreCase("exp")) {
-                    ((MCFurnaceExtractEvent) event).setExpToDrop(Static.getInt32(value, Target.UNKNOWN));
+            if (event instanceof Events.MCFurnaceExtractEvent) {
+                if (key.equalsIgnoreCase("exp")) {
+                    ((Events.MCFurnaceExtractEvent) event).setExpToDrop(Static.getInt32(value, Target.UNKNOWN));
                     return true;
                 }
             }
@@ -945,11 +953,11 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(!(e instanceof MCFurnaceSmeltEvent)) {
+            if (!(e instanceof Events.MCFurnaceSmeltEvent)) {
                 throw new EventException("Cannot convert event to FurnaceSmeltEvent");
             }
 
-            MCFurnaceSmeltEvent event = (MCFurnaceSmeltEvent) e;
+            Events.MCFurnaceSmeltEvent event = (Events.MCFurnaceSmeltEvent) e;
             Target t = Target.UNKNOWN;
             Map<String, Construct> mapEvent = evaluate_helper(event);
 
@@ -967,9 +975,9 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCFurnaceSmeltEvent) {
-                if(key.equalsIgnoreCase("result")) {
-                    ((MCFurnaceSmeltEvent) event).setResult(ObjectGenerator.GetGenerator().item(value, value.getTarget()));
+            if (event instanceof Events.MCFurnaceSmeltEvent) {
+                if (key.equalsIgnoreCase("result")) {
+                    ((Events.MCFurnaceSmeltEvent) event).setResult(ObjectGenerator.GetGenerator().item(value, value.getTarget()));
                     return true;
                 }
             }
@@ -1010,12 +1018,11 @@ public class Core {
 
             @Override
             public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-                if(!(e instanceof MCLeavesDecayEvent)) {
+                if (!(e instanceof Events.MCLeavesDecayEvent)) {
                     throw new EventException("Cannot convert event to LeavesDecayEvent");
                 }
 
-                MCLeavesDecayEvent event = (MCLeavesDecayEvent) e;
-                Target t = Target.UNKNOWN;
+                Events.MCLeavesDecayEvent event = (Events.MCLeavesDecayEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(event);
 
                 mapEvent.put("location", ObjectGenerator.GetGenerator().location(event.getBlock().getLocation(), false));
@@ -1071,21 +1078,21 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent event) throws EventException {
-            if(event instanceof MCPrepareAnvilEvent) {
+            if (event instanceof Events.MCPrepareAnvilEvent) {
 
-                MCPrepareAnvilEvent e = (MCPrepareAnvilEvent) event;
+                Events.MCPrepareAnvilEvent e = (Events.MCPrepareAnvilEvent) event;
                 Map<String, Construct> ret = evaluate_helper(e);
                 Target t = Target.UNKNOWN;
 
                 CArray viewers = new CArray(t);
-                for(MCHumanEntity v : e.getViewers()) {
+                for (MCHumanEntity v : e.getViewers()) {
                     viewers.push(new CString(v.getName(), t), t);
                 }
                 ret.put("viewers", viewers);
 
                 CArray inventory = CArray.GetAssociativeArray(t);
                 MCInventory inv = e.getInventory();
-                for(int i = 0; i < e.getInventory().getSize(); i++) {
+                for (int i = 0; i < e.getInventory().getSize(); i++) {
                     inventory.set(i, ObjectGenerator.GetGenerator().item(e.getInventory().getItem(i), t), t);
                 }
                 ret.put("inventory", inventory);
@@ -1108,19 +1115,19 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCPrepareAnvilEvent) {
-                if(key.equalsIgnoreCase("result")) {
-                    if(value instanceof CArray) {
-                        ((MCPrepareAnvilEvent) event).setResult(ObjectGenerator.GetGenerator().item(value, value.getTarget()));
+            if (event instanceof Events.MCPrepareAnvilEvent) {
+                if (key.equalsIgnoreCase("result")) {
+                    if (value instanceof CArray) {
+                        ((Events.MCPrepareAnvilEvent) event).setResult(ObjectGenerator.GetGenerator().item(value, value.getTarget()));
                         return true;
-                    } else if(value instanceof CNull) {
-                        ((MCPrepareAnvilEvent) event).setResult(null);
+                    } else if (value instanceof CNull) {
+                        ((Events.MCPrepareAnvilEvent) event).setResult(null);
                         return true;
                     } else {
                         throw new CRECastException("Expected an array but received " + value, value.getTarget());
                     }
-                } else if(key.equalsIgnoreCase("cost")) {
-                    ((MCPrepareAnvilEvent) event).setCost(Static.getInt32(value, value.getTarget()));
+                } else if (key.equalsIgnoreCase("cost")) {
+                    ((Events.MCPrepareAnvilEvent) event).setCost(Static.getInt32(value, value.getTarget()));
                     return true;
                 }
             }
@@ -1166,9 +1173,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCEggThrowEvent) {
+            if (e instanceof Events.MCEggThrowEvent) {
 
-                MCEggThrowEvent ete = (MCEggThrowEvent) e;
+                Events.MCEggThrowEvent ete = (Events.MCEggThrowEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(ete);
                 Target t = Target.UNKNOWN;
 
@@ -1192,15 +1199,15 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCEggThrowEvent) {
-                if(key.equalsIgnoreCase("hatching")) {
-                    ((MCEggThrowEvent) event).setHatching(Static.getBoolean(value));
+            if (event instanceof Events.MCEggThrowEvent) {
+                if (key.equalsIgnoreCase("hatching")) {
+                    ((Events.MCEggThrowEvent) event).setHatching(Static.getBoolean(value, value.getTarget()));
                     return true;
-                } else if(key.equalsIgnoreCase("hatchtype")) {
-                    ((MCEggThrowEvent) event).setHatchingType(MCEntityType.valueOf(value.val()));
+                } else if (key.equalsIgnoreCase("hatchtype")) {
+                    ((Events.MCEggThrowEvent) event).setHatchingType(MCEntityType.valueOf(value.val()));
                     return true;
-                } else if(key.equalsIgnoreCase("numhatch")) {
-                    ((MCEggThrowEvent) event).setNumHatches(Byte.valueOf(value.val()));
+                } else if (key.equalsIgnoreCase("numhatch")) {
+                    ((Events.MCEggThrowEvent) event).setNumHatches(Byte.valueOf(value.val()));
                     return true;
                 }
             }
@@ -1242,9 +1249,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCItemBreakEvent) {
+            if (e instanceof Events.MCItemBreakEvent) {
 
-                MCItemBreakEvent ibe = (MCItemBreakEvent) e;
+                Events.MCItemBreakEvent ibe = (Events.MCItemBreakEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(ibe);
                 Target t = Target.UNKNOWN;
 
@@ -1303,9 +1310,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCLocaleChangeEvent) {
+            if (e instanceof Events.MCLocaleChangeEvent) {
 
-                MCLocaleChangeEvent lce = (MCLocaleChangeEvent) e;
+                Events.MCLocaleChangeEvent lce = (Events.MCLocaleChangeEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(e);
                 Target t = Target.UNKNOWN;
 
@@ -1367,16 +1374,16 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCPlayerAdvancementDoneEvent) {
+            if (e instanceof Events.MCPlayerAdvancementDoneEvent) {
 
-                MCPlayerAdvancementDoneEvent pade = (MCPlayerAdvancementDoneEvent) e;
+                Events.MCPlayerAdvancementDoneEvent pade = (Events.MCPlayerAdvancementDoneEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(e);
                 Target t = Target.UNKNOWN;
 
                 mapEvent.put("player", new CString(pade.getPlayer().getName(), t));
 
                 CArray criteria = new CArray(t);
-                for(String s : pade.getAdvancement().getCriteria()) {
+                for (String s : pade.getAdvancement().getCriteria()) {
                     criteria.push(new CString(s, t), t);
                 }
                 mapEvent.put("criteria", criteria);
@@ -1439,9 +1446,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCPlayerBucketEvent) {
+            if (e instanceof Events.MCPlayerBucketEvent) {
 
-                MCPlayerBucketEvent pbe = (MCPlayerBucketEvent) e;
+                Events.MCPlayerBucketEvent pbe = (Events.MCPlayerBucketEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(e);
                 Target t = Target.UNKNOWN;
 
@@ -1474,9 +1481,9 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCPlayerBucketEvent) {
-                if(key.equalsIgnoreCase("item") && value instanceof CArray) {
-                    ((MCPlayerBucketEvent) event).setItemStack(ObjectGenerator.GetGenerator().item(value, Target.UNKNOWN));
+            if (event instanceof Events.MCPlayerBucketEvent) {
+                if (key.equalsIgnoreCase("item") && value instanceof CArray) {
+                    ((Events.MCPlayerBucketEvent) event).setItemStack(ObjectGenerator.GetGenerator().item(value, Target.UNKNOWN));
                     return true;
                 }
             }
@@ -1521,9 +1528,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCPlayerBucketEvent) {
+            if (e instanceof Events.MCPlayerBucketEvent) {
 
-                MCPlayerBucketEvent pbe = (MCPlayerBucketEvent) e;
+                Events.MCPlayerBucketEvent pbe = (Events.MCPlayerBucketEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(e);
                 Target t = Target.UNKNOWN;
 
@@ -1556,9 +1563,9 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCPlayerBucketEvent) {
-                if(key.equalsIgnoreCase("item") && value instanceof CArray) {
-                    ((MCPlayerBucketEvent) event).setItemStack(ObjectGenerator.GetGenerator().item(value, Target.UNKNOWN));
+            if (event instanceof Events.MCPlayerBucketEvent) {
+                if (key.equalsIgnoreCase("item") && value instanceof CArray) {
+                    ((Events.MCPlayerBucketEvent) event).setItemStack(ObjectGenerator.GetGenerator().item(value, Target.UNKNOWN));
                     return true;
                 }
             }
@@ -1600,9 +1607,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCPlayerResourcepackStatusEvent) {
+            if (e instanceof Events.MCPlayerResourcepackStatusEvent) {
 
-                MCPlayerResourcepackStatusEvent prse = (MCPlayerResourcepackStatusEvent) e;
+                Events.MCPlayerResourcepackStatusEvent prse = (Events.MCPlayerResourcepackStatusEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(e);
                 Target t = Target.UNKNOWN;
 
@@ -1656,8 +1663,8 @@ public class Core {
 
         @Override
         public boolean matches(Map<String, Construct> prefilter, BindableEvent e) throws PrefilterNonMatchException {
-            if(e instanceof MCPlayerStatisticIncrementEvent) {
-                MCPlayerStatisticIncrementEvent event = (MCPlayerStatisticIncrementEvent) e;
+            if (e instanceof Events.MCPlayerStatisticIncrementEvent) {
+                Events.MCPlayerStatisticIncrementEvent event = (Events.MCPlayerStatisticIncrementEvent) e;
                 Prefilters.match(prefilter, "name", event.getStatistic().name(), Prefilters.PrefilterType.MACRO);
                 Prefilters.match(prefilter, "type", event.getStatistic().getType().name(), Prefilters.PrefilterType.MACRO);
 
@@ -1674,17 +1681,17 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCPlayerStatisticIncrementEvent) {
+            if (e instanceof Events.MCPlayerStatisticIncrementEvent) {
 
-                MCPlayerStatisticIncrementEvent psie = (MCPlayerStatisticIncrementEvent) e;
+                Events.MCPlayerStatisticIncrementEvent psie = (Events.MCPlayerStatisticIncrementEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(e);
                 Target t = Target.UNKNOWN;
 
-                if(psie.getEntityType() != null) {
+                if (psie.getEntityType() != null) {
                     mapEvent.put("entitytype", new CString(psie.getEntityType().name(), t));
                 }
 
-                if(psie.getMaterial() instanceof MCMaterial) {
+                if (psie.getMaterial() instanceof MCMaterial) {
                     mapEvent.put("material", new CString(((MCMaterial) psie.getMaterial()).getName(), t));
                 }
 
@@ -1748,9 +1755,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCPlayerVelocityEvent) {
+            if (e instanceof Events.MCPlayerVelocityEvent) {
 
-                MCPlayerVelocityEvent pve = (MCPlayerVelocityEvent) e;
+                Events.MCPlayerVelocityEvent pve = (Events.MCPlayerVelocityEvent) e;
                 Map<String, Construct> mapEvent = evaluate_helper(e);
                 Target t = Target.UNKNOWN;
 
@@ -1773,10 +1780,10 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCPlayerVelocityEvent) {
-                if(key.equalsIgnoreCase("velocity")) {
+            if (event instanceof Events.MCPlayerVelocityEvent) {
+                if (key.equalsIgnoreCase("velocity")) {
                     Vector3D vector = ObjectGenerator.GetGenerator().vector(value, Target.UNKNOWN);
-                    ((MCPlayerVelocityEvent) event).setVelocity(vector);
+                    ((Events.MCPlayerVelocityEvent) event).setVelocity(vector);
                     return true;
                 }
             }
@@ -1819,16 +1826,16 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCAreaEffectCloudApplyEvent) {
+            if (e instanceof Events.MCAreaEffectCloudApplyEvent) {
 
-                MCAreaEffectCloudApplyEvent event = (MCAreaEffectCloudApplyEvent) e;
+                Events.MCAreaEffectCloudApplyEvent event = (Events.MCAreaEffectCloudApplyEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
                 ret.put("id", new CString(event.getEntity().getUniqueId().toString(), t));
 
                 CArray affected = new CArray(t);
-                for(MCLivingEntity le : event.getAffectedEntities()) {
+                for (MCLivingEntity le : event.getAffectedEntities()) {
                     affected.push(new CString(le.getUniqueId().toString(), t), t);
                 }
                 ret.put("affected", affected);
@@ -1887,8 +1894,8 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCCreeperPowerEvent) {
-                MCCreeperPowerEvent event = (MCCreeperPowerEvent) e;
+            if (e instanceof Events.MCCreeperPowerEvent) {
+                Events.MCCreeperPowerEvent event = (Events.MCCreeperPowerEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -1955,9 +1962,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCEntityAirChangeEvent) {
+            if (e instanceof Events.MCEntityAirChangeEvent) {
 
-                MCEntityAirChangeEvent event = (MCEntityAirChangeEvent) e;
+                Events.MCEntityAirChangeEvent event = (Events.MCEntityAirChangeEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -1977,9 +1984,9 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCEntityAirChangeEvent) {
-                if(key.equalsIgnoreCase("amount")) {
-                    ((MCEntityAirChangeEvent) event).setAmount(Static.getInt32(value, Target.UNKNOWN));
+            if (event instanceof Events.MCEntityAirChangeEvent) {
+                if (key.equalsIgnoreCase("amount")) {
+                    ((Events.MCEntityAirChangeEvent) event).setAmount(Static.getInt32(value, Target.UNKNOWN));
                     return true;
                 }
             }
@@ -2026,9 +2033,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCEntityBreedEvent) {
+            if (e instanceof Events.MCEntityBreedEvent) {
 
-                MCEntityBreedEvent event = (MCEntityBreedEvent) e;
+                Events.MCEntityBreedEvent event = (Events.MCEntityBreedEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -2053,9 +2060,9 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCEntityBreedEvent) {
-                if(key.equalsIgnoreCase("exp")) {
-                    ((MCEntityBreedEvent) event).setExperience(Static.getInt32(value, Target.UNKNOWN));
+            if (event instanceof Events.MCEntityBreedEvent) {
+                if (key.equalsIgnoreCase("exp")) {
+                    ((Events.MCEntityBreedEvent) event).setExperience(Static.getInt32(value, Target.UNKNOWN));
                     return true;
                 }
             }
@@ -2097,9 +2104,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCEntityResurrectEvent) {
+            if (e instanceof Events.MCEntityResurrectEvent) {
 
-                MCEntityResurrectEvent event = (MCEntityResurrectEvent) e;
+                Events.MCEntityResurrectEvent event = (Events.MCEntityResurrectEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -2161,9 +2168,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCEntityShootBowEvent) {
+            if (e instanceof Events.MCEntityShootBowEvent) {
 
-                MCEntityShootBowEvent event = (MCEntityShootBowEvent) e;
+                Events.MCEntityShootBowEvent event = (Events.MCEntityShootBowEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -2190,16 +2197,16 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCEntityShootBowEvent) {
-                if(key.equalsIgnoreCase("projectile")) {
+            if (event instanceof Events.MCEntityShootBowEvent) {
+                if (key.equalsIgnoreCase("projectile")) {
                     MCEntity le;
-                    if(value instanceof CNull) {
+                    if (value instanceof CNull) {
                         le = null;
                     } else {
                         le = Static.getEntity(value, Target.UNKNOWN);
                     }
-                    if(le != null) {
-                        ((MCEntityShootBowEvent) event).setProjectile(le);
+                    if (le != null) {
+                        ((Events.MCEntityShootBowEvent) event).setProjectile(le);
                     } else {
                         throw new CREBadEntityException("That entity (UUID: " + value.val() + ")is not exists.", Target.UNKNOWN);
                     }
@@ -2245,9 +2252,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCEntityTameEvent) {
+            if (e instanceof Events.MCEntityTameEvent) {
 
-                MCEntityTameEvent event = (MCEntityTameEvent) e;
+                Events.MCEntityTameEvent event = (Events.MCEntityTameEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -2307,9 +2314,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCItemMergeEvent) {
+            if (e instanceof Events.MCItemMergeEvent) {
 
-                MCItemMergeEvent event = (MCItemMergeEvent) e;
+                Events.MCItemMergeEvent event = (Events.MCItemMergeEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -2369,9 +2376,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCSheepDyeWoolEvent) {
+            if (e instanceof Events.MCSheepDyeWoolEvent) {
 
-                MCSheepDyeWoolEvent event = (MCSheepDyeWoolEvent) e;
+                Events.MCSheepDyeWoolEvent event = (Events.MCSheepDyeWoolEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -2393,12 +2400,12 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCSheepDyeWoolEvent) {
-                if(key.equalsIgnoreCase("color")) {
-                    String[] possible = new String[] {"BLACK", "BLUE", "BROWN", "CYAN", "GRAY", "GREEN", "LIGHT_BLUE", "LIGHT_GRAY", "LIME",
+            if (event instanceof Events.MCSheepDyeWoolEvent) {
+                if (key.equalsIgnoreCase("color")) {
+                    String[] possible = new String[]{"BLACK", "BLUE", "BROWN", "CYAN", "GRAY", "GREEN", "LIGHT_BLUE", "LIGHT_GRAY", "LIME",
                             "MAGENTA", "ORANGE", "PINK", "PUPPLE", "RED", "WHITE", "YELLOW"};
-                    if(Arrays.asList(possible).contains(value.getValue().toUpperCase())) {
-                        ((MCSheepDyeWoolEvent) event).setColor(MCDyeColor.valueOf(value.getValue().toUpperCase()));
+                    if (Arrays.asList(possible).contains(value.getValue().toUpperCase())) {
+                        ((Events.MCSheepDyeWoolEvent) event).setColor(MCDyeColor.valueOf(value.getValue().toUpperCase()));
                         return true;
                     }
                 }
@@ -2441,9 +2448,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCSheepRegrowWoolEvent) {
+            if (e instanceof Events.MCSheepRegrowWoolEvent) {
 
-                MCSheepRegrowWoolEvent event = (MCSheepRegrowWoolEvent) e;
+                Events.MCSheepRegrowWoolEvent event = (Events.MCSheepRegrowWoolEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -2502,9 +2509,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCSlimeSplitEvent) {
+            if (e instanceof Events.MCSlimeSplitEvent) {
 
-                MCSlimeSplitEvent event = (MCSlimeSplitEvent) e;
+                Events.MCSlimeSplitEvent event = (Events.MCSlimeSplitEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -2525,9 +2532,9 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCSlimeSplitEvent) {
-                if(key.equalsIgnoreCase("count")) {
-                    ((MCSlimeSplitEvent) event).setCount(Static.getInt32(value, Target.UNKNOWN));
+            if (event instanceof Events.MCSlimeSplitEvent) {
+                if (key.equalsIgnoreCase("count")) {
+                    ((Events.MCSlimeSplitEvent) event).setCount(Static.getInt32(value, Target.UNKNOWN));
                     return true;
                 }
             }
@@ -2570,9 +2577,9 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCVillagerAcquireTradeEvent) {
+            if (e instanceof Events.MCVillagerAcquireTradeEvent) {
 
-                MCVillagerAcquireTradeEvent event = (MCVillagerAcquireTradeEvent) e;
+                Events.MCVillagerAcquireTradeEvent event = (Events.MCVillagerAcquireTradeEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
@@ -2580,7 +2587,7 @@ public class Core {
 
                 CArray recipe = new CArray(t);
                 CArray ingred = new CArray(t);
-                for(MCItemStack is : event.getRecipe().getIngredients()) {
+                for (MCItemStack is : event.getRecipe().getIngredients()) {
                     ingred.push(ObjectGenerator.GetGenerator().item(is, t), t);
                 }
                 recipe.set("ingredients", ingred, t);
@@ -2605,11 +2612,11 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCVillagerAcquireTradeEvent) {
-                if(key.equalsIgnoreCase("recipe")) {
-                    if(value instanceof CArray) {
+            if (event instanceof Events.MCVillagerAcquireTradeEvent) {
+                if (key.equalsIgnoreCase("recipe")) {
+                    if (value instanceof CArray) {
                         CArray arr = (CArray) value;
-                        MCVillagerAcquireTradeEvent e = (MCVillagerAcquireTradeEvent) event;
+                        Events.MCVillagerAcquireTradeEvent e = (Events.MCVillagerAcquireTradeEvent) event;
                         Target t = Target.UNKNOWN;
                         arr.set("type", new CString("MERCHANT", t), t);
                         MCMerchantRecipe mr = (MCMerchantRecipe) ObjectGenerator.GetGenerator().recipe(arr, t);
@@ -2658,18 +2665,18 @@ public class Core {
 
         @Override
         public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if(e instanceof MCVillagerReplenishTradeEvent) {
+            if (e instanceof Events.MCVillagerReplenishTradeEvent) {
 
-                MCVillagerReplenishTradeEvent event = (MCVillagerReplenishTradeEvent) e;
+                Events.MCVillagerReplenishTradeEvent event = (Events.MCVillagerReplenishTradeEvent) e;
                 Map<String, Construct> ret = evaluate_helper(event);
                 Target t = Target.UNKNOWN;
 
-                ret.put("bonus", event.getBonus());
+                ret.put("bonus", new CInt(event.getBonus(), t));
                 ret.put("id", new CString(event.getEntity().getUniqueId().toString(), t));
 
                 CArray recipe = new CArray(t);
                 CArray ingred = new CArray(t);
-                for(MCItemStack is : event.getRecipe().getIngredients()) {
+                for (MCItemStack is : event.getRecipe().getIngredients()) {
                     ingred.push(ObjectGenerator.GetGenerator().item(is, t), t);
                 }
                 recipe.set("ingredients", ingred, t);
@@ -2695,13 +2702,13 @@ public class Core {
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent event) {
-            if(event instanceof MCVillagerReplenishTradeEvent) {
-                MCVillagerReplenishTradeEvent e = (MCVillagerReplenishTradeEvent) event;
-                if(key.equalsIgnoreCase("bonus")) {
+            if (event instanceof Events.MCVillagerReplenishTradeEvent) {
+                Events.MCVillagerReplenishTradeEvent e = (Events.MCVillagerReplenishTradeEvent) event;
+                if (key.equalsIgnoreCase("bonus")) {
                     e.setBonus(Static.getInt32(value, Target.UNKNOWN));
                     return true;
-                } else if(key.equalsIgnoreCase("recipe")) {
-                    if(value instanceof CArray) {
+                } else if (key.equalsIgnoreCase("recipe")) {
+                    if (value instanceof CArray) {
                         CArray arr = (CArray) value;
                         Target t = Target.UNKNOWN;
                         arr.set("type", new CString("MERCHANT", t), t);

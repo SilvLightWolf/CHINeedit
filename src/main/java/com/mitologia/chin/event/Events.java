@@ -1,10 +1,16 @@
 package com.mitologia.chin.event;
 
 import com.laytonsmith.PureUtilities.Vector3D;
-import com.laytonsmith.abstraction.*;
+import com.laytonsmith.abstraction.MCAnimalTamer;
+import com.laytonsmith.abstraction.MCEntity;
+import com.laytonsmith.abstraction.MCInventory;
+import com.laytonsmith.abstraction.MCItemStack;
+import com.laytonsmith.abstraction.MCLivingEntity;
+import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.abstraction.blocks.MCBlock;
 import com.laytonsmith.abstraction.blocks.MCBlockFace;
 import com.laytonsmith.abstraction.blocks.MCMaterial;
+import com.laytonsmith.abstraction.entities.MCLightningStrike;
 import com.laytonsmith.abstraction.entities.MCPigZombie;
 import com.laytonsmith.abstraction.entities.MCSheep;
 import com.laytonsmith.abstraction.entities.MCSlime;
@@ -14,6 +20,8 @@ import com.laytonsmith.abstraction.enums.MCEntityType;
 import com.laytonsmith.abstraction.events.MCInventoryEvent;
 import com.laytonsmith.core.events.BindableEvent;
 import com.laytonsmith.core.constructs.CInt;
+import com.mitologia.chin.bukkit.MCEgg;
+import com.mitologia.chin.bukkit.MCItem;
 import com.mitologia.chin.bukkit.MCMapView;
 import com.mitologia.chin.bukkit.MCMerchantRecipe;
 import org.bukkit.NamespacedKey;
@@ -281,7 +289,7 @@ public class Events {
 
     public interface MCFurnaceBurnEvent extends BindableEvent {
 
-        int getBurnTine();
+        int getBurnTime();
 
         MCItemStack getFuel();
 
@@ -491,7 +499,7 @@ public class Events {
 
     public interface MCVillagerReplenishTradeEvent extends BindableEvent {
 
-        CInt getBonus();
+        int getBonus();
 
         MCVillager getEntity();
 

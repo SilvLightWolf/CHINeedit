@@ -1,7 +1,12 @@
 package com.mitologia.chin.abstraction;
 
 import com.laytonsmith.PureUtilities.Vector3D;
-import com.laytonsmith.abstraction.*;
+import com.laytonsmith.abstraction.MCAnimalTamer;
+import com.laytonsmith.abstraction.MCEntity;
+import com.laytonsmith.abstraction.MCInventory;
+import com.laytonsmith.abstraction.MCItemStack;
+import com.laytonsmith.abstraction.MCLivingEntity;
+import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.abstraction.blocks.MCBlock;
 import com.laytonsmith.abstraction.blocks.MCBlockFace;
 import com.laytonsmith.abstraction.blocks.MCMaterial;
@@ -10,8 +15,16 @@ import com.laytonsmith.abstraction.bukkit.BukkitMCInventory;
 import com.laytonsmith.abstraction.bukkit.BukkitMCItemStack;
 import com.laytonsmith.abstraction.bukkit.blocks.BukkitMCBlock;
 import com.laytonsmith.abstraction.bukkit.blocks.BukkitMCMaterial;
-import com.laytonsmith.abstraction.bukkit.entities.*;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCEntity;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCLightningStrike;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCLivingEntity;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCPigZombie;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCPlayer;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCSheep;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCSlime;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCVillager;
 import com.laytonsmith.abstraction.bukkit.events.BukkitInventoryEvents;
+import com.laytonsmith.abstraction.entities.MCLightningStrike;
 import com.laytonsmith.abstraction.entities.MCPigZombie;
 import com.laytonsmith.abstraction.entities.MCSheep;
 import com.laytonsmith.abstraction.entities.MCSlime;
@@ -19,12 +32,14 @@ import com.laytonsmith.abstraction.entities.MCVillager;
 import com.laytonsmith.abstraction.enums.MCDyeColor;
 import com.laytonsmith.abstraction.enums.MCEntityType;
 import com.laytonsmith.abstraction.enums.bukkit.BukkitMCEntityType;
-import com.laytonsmith.annotations.abstraction;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.Target;
+import com.mitologia.chin.bukkit.MCEgg;
+import com.mitologia.chin.bukkit.MCItem;
 import com.mitologia.chin.bukkit.MCMapView;
 import com.mitologia.chin.bukkit.MCMerchantRecipe;
+import com.mitologia.chin.event.Events;
 import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Statistic;
@@ -33,12 +48,44 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
-import org.bukkit.event.block.*;
-import org.bukkit.event.entity.*;
-import org.bukkit.event.inventory.*;
-import org.bukkit.event.player.*;
 
-import com.mitologia.chin.event.Events.*;
+import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.block.CauldronLevelChangeEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
+import org.bukkit.event.entity.AreaEffectCloudApplyEvent;
+import org.bukkit.event.entity.CreeperPowerEvent;
+import org.bukkit.event.entity.EntityAirChangeEvent;
+import org.bukkit.event.entity.EntityBreedEvent;
+import org.bukkit.event.entity.EntityDropItemEvent;
+import org.bukkit.event.entity.EntityResurrectEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.EntityTameEvent;
+import org.bukkit.event.entity.EntityToggleSwimEvent;
+import org.bukkit.event.entity.ItemMergeEvent;
+import org.bukkit.event.entity.PigZombieAngerEvent;
+import org.bukkit.event.entity.SheepDyeWoolEvent;
+import org.bukkit.event.entity.SheepRegrowWoolEvent;
+import org.bukkit.event.entity.SlimeSplitEvent;
+import org.bukkit.event.entity.VillagerAcquireTradeEvent;
+import org.bukkit.event.entity.VillagerReplenishTradeEvent;
+import org.bukkit.event.inventory.BrewEvent;
+import org.bukkit.event.inventory.BrewingStandFuelEvent;
+import org.bukkit.event.inventory.FurnaceBurnEvent;
+import org.bukkit.event.inventory.FurnaceExtractEvent;
+import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.event.player.PlayerAdvancementDoneEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerEggThrowEvent;
+import org.bukkit.event.player.PlayerItemBreakEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.event.player.PlayerLocaleChangeEvent;
+import org.bukkit.event.player.PlayerRecipeDiscoverEvent;
+import org.bukkit.event.player.PlayerResourcePackStatusEvent;
+import org.bukkit.event.player.PlayerRiptideEvent;
+import org.bukkit.event.player.PlayerStatisticIncrementEvent;
+import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.event.server.MapInitializeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
@@ -49,7 +96,7 @@ import java.util.List;
 
 public class AbstractionEvent {
 
-    public static class BukkitMCItemDamageEvent implements MCItemDamageEvent {
+    public static class BukkitMCItemDamageEvent implements Events.MCItemDamageEvent {
 
         PlayerItemDamageEvent pide;
 
@@ -94,7 +141,7 @@ public class AbstractionEvent {
 
     }
 
-    public static class BukkitMCPlayerRecipeDiscoverEvent implements MCPlayerRecipeDiscoverEvent {
+    public static class BukkitMCPlayerRecipeDiscoverEvent implements Events.MCPlayerRecipeDiscoverEvent {
 
         PlayerRecipeDiscoverEvent prde;
 
@@ -128,7 +175,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCBlockPhysicsEvent implements MCBlockPhysicsEvent {
+    public static class BukkitMCBlockPhysicsEvent implements Events.MCBlockPhysicsEvent {
 
         BlockPhysicsEvent bpe;
 
@@ -163,8 +210,7 @@ public class AbstractionEvent {
 
     }
 
-    @abstraction(type = Implementation.Type.BUKKIT)
-    public static class BukkitMCEntityDropItemEvent implements MCEntityDropItemEvent {
+    public static class BukkitMCEntityDropItemEvent implements Events.MCEntityDropItemEvent {
 
         EntityDropItemEvent edie;
 
@@ -198,8 +244,7 @@ public class AbstractionEvent {
         }
     }
 
-    @abstraction(type = Implementation.Type.BUKKIT)
-    public static class BukkitMCEntityToggleSwimEvent implements MCEntityToggleSwimEvent {
+    public static class BukkitMCEntityToggleSwimEvent implements Events.MCEntityToggleSwimEvent {
 
         EntityToggleSwimEvent etse;
 
@@ -233,7 +278,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCPigZombieAngerEvent implements MCPigZombieAngerEvent {
+    public static class BukkitMCPigZombieAngerEvent implements Events.MCPigZombieAngerEvent {
 
         PigZombieAngerEvent pzae;
 
@@ -278,7 +323,7 @@ public class AbstractionEvent {
 
     }
 
-    public static class BukkitMCPlayerRiptideEvent implements MCPlayerRiptideEvent {
+    public static class BukkitMCPlayerRiptideEvent implements Events.MCPlayerRiptideEvent {
 
         PlayerRiptideEvent pre;
 
@@ -302,7 +347,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCMapInitializeEvent implements MCMapInitializeEvent {
+    public static class BukkitMCMapInitializeEvent implements Events.MCMapInitializeEvent {
 
         MapInitializeEvent mie;
 
@@ -321,7 +366,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCAreaEffectCloudApplyEvent implements MCAreaEffectCloudApplyEvent {
+    public static class BukkitMCAreaEffectCloudApplyEvent implements Events.MCAreaEffectCloudApplyEvent {
 
         AreaEffectCloudApplyEvent aeca;
 
@@ -332,7 +377,7 @@ public class AbstractionEvent {
         @Override
         public List<MCLivingEntity> getAffectedEntities() {
             List<MCLivingEntity> list = new ArrayList<>();
-            for(LivingEntity le : aeca.getAffectedEntities()) {
+            for (LivingEntity le : aeca.getAffectedEntities()) {
                 list.add(new BukkitMCLivingEntity(le));
             }
             return list;
@@ -350,7 +395,7 @@ public class AbstractionEvent {
     }
 
 
-    public static class BukkitMCBrewingStandFuelEvent implements MCBrewingStandFuelEvent {
+    public static class BukkitMCBrewingStandFuelEvent implements Events.MCBrewingStandFuelEvent {
 
         BrewingStandFuelEvent bsfe;
 
@@ -404,7 +449,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCBrewEvent implements MCBrewEvent {
+    public static class BukkitMCBrewEvent implements Events.MCBrewEvent {
 
         BrewEvent be;
 
@@ -443,7 +488,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCCauldronLevelChangeEvent implements MCCauldronLevelChangeEvent {
+    public static class BukkitMCCauldronLevelChangeEvent implements Events.MCCauldronLevelChangeEvent {
 
         CauldronLevelChangeEvent clce;
 
@@ -497,7 +542,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCFurnaceBurnEvent implements MCFurnaceBurnEvent {
+    public static class BukkitMCFurnaceBurnEvent implements Events.MCFurnaceBurnEvent {
 
         FurnaceBurnEvent fbe;
 
@@ -506,7 +551,7 @@ public class AbstractionEvent {
         }
 
         @Override
-        public int getBurnTine() {
+        public int getBurnTime() {
             return fbe.getBurnTime();
         }
 
@@ -551,7 +596,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCFurnaceExtractEvent implements MCFurnaceExtractEvent {
+    public static class BukkitMCFurnaceExtractEvent implements Events.MCFurnaceExtractEvent {
 
         FurnaceExtractEvent fee;
 
@@ -595,7 +640,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCFurnaceSmeltEvent implements MCFurnaceSmeltEvent {
+    public static class BukkitMCFurnaceSmeltEvent implements Events.MCFurnaceSmeltEvent {
 
         FurnaceSmeltEvent fse;
 
@@ -639,7 +684,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCLeavesDeacyEvent implements MCLeavesDecayEvent {
+    public static class BukkitMCLeavesDeacyEvent implements Events.MCLeavesDecayEvent {
 
         LeavesDecayEvent lde;
 
@@ -668,7 +713,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCEggThrowEvent implements MCEggThrowEvent {
+    public static class BukkitMCEggThrowEvent implements Events.MCEggThrowEvent {
 
         PlayerEggThrowEvent pete;
 
@@ -721,7 +766,8 @@ public class AbstractionEvent {
             return pete;
         }
     }
-    public static class BukkitMCEntityAirChangeEvent implements MCEntityAirChangeEvent {
+
+    public static class BukkitMCEntityAirChangeEvent implements Events.MCEntityAirChangeEvent {
 
         EntityAirChangeEvent eace;
 
@@ -760,7 +806,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCEntityBreedEvent implements MCEntityBreedEvent {
+    public static class BukkitMCEntityBreedEvent implements Events.MCEntityBreedEvent {
 
         EntityBreedEvent ebe;
 
@@ -819,7 +865,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCEntityResurrectEvent implements MCEntityResurrectEvent {
+    public static class BukkitMCEntityResurrectEvent implements Events.MCEntityResurrectEvent {
 
         EntityResurrectEvent ere;
 
@@ -848,7 +894,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCEntityShootBowEvent implements MCEntityShootBowEvent {
+    public static class BukkitMCEntityShootBowEvent implements Events.MCEntityShootBowEvent {
 
         EntityShootBowEvent esbe;
 
@@ -897,7 +943,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCEntityTameEvent implements MCEntityTameEvent {
+    public static class BukkitMCEntityTameEvent implements Events.MCEntityTameEvent {
 
         EntityTameEvent ete;
 
@@ -931,7 +977,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCItemMergeEvent implements MCItemMergeEvent {
+    public static class BukkitMCItemMergeEvent implements Events.MCItemMergeEvent {
 
         ItemMergeEvent ime;
 
@@ -965,7 +1011,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCLocaleChangeEvent implements MCLocaleChangeEvent {
+    public static class BukkitMCLocaleChangeEvent implements Events.MCLocaleChangeEvent {
 
         PlayerLocaleChangeEvent plce;
 
@@ -989,7 +1035,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCPlayerResourcepackStatusEvent implements MCPlayerResourcepackStatusEvent {
+    public static class BukkitMCPlayerResourcepackStatusEvent implements Events.MCPlayerResourcepackStatusEvent {
 
         PlayerResourcePackStatusEvent prpse;
 
@@ -1013,7 +1059,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCPlayerStatisticIncrementEvent implements MCPlayerStatisticIncrementEvent {
+    public static class BukkitMCPlayerStatisticIncrementEvent implements Events.MCPlayerStatisticIncrementEvent {
 
         PlayerStatisticIncrementEvent psie;
 
@@ -1067,7 +1113,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCPlayerVelocityEvent implements MCPlayerVelocityEvent {
+    public static class BukkitMCPlayerVelocityEvent implements Events.MCPlayerVelocityEvent {
 
         PlayerVelocityEvent pve;
 
@@ -1106,7 +1152,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCPrepareAnvilEvent extends BukkitInventoryEvents.BukkitMCInventoryEvent implements MCPrepareAnvilEvent {
+    public static class BukkitMCPrepareAnvilEvent extends BukkitInventoryEvents.BukkitMCInventoryEvent implements Events.MCPrepareAnvilEvent {
 
         PrepareAnvilEvent e;
 
@@ -1146,7 +1192,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCSheepDyeWoolEvent implements MCSheepDyeWoolEvent {
+    public static class BukkitMCSheepDyeWoolEvent implements Events.MCSheepDyeWoolEvent {
 
         SheepDyeWoolEvent sdwe;
 
@@ -1185,7 +1231,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCSheepRegrowWoolEvent implements MCSheepRegrowWoolEvent {
+    public static class BukkitMCSheepRegrowWoolEvent implements Events.MCSheepRegrowWoolEvent {
 
         SheepRegrowWoolEvent srwe;
 
@@ -1214,7 +1260,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCSlimeSplitEvent implements MCSlimeSplitEvent {
+    public static class BukkitMCSlimeSplitEvent implements Events.MCSlimeSplitEvent {
 
         SlimeSplitEvent sse;
 
@@ -1253,7 +1299,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCVillagerAcquireTradeEvent implements MCVillagerAcquireTradeEvent {
+    public static class BukkitMCVillagerAcquireTradeEvent implements Events.MCVillagerAcquireTradeEvent {
 
         VillagerAcquireTradeEvent vate;
 
@@ -1292,7 +1338,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCVillagerReplenishTradeEvent implements MCVillagerReplenishTradeEvent {
+    public static class BukkitMCVillagerReplenishTradeEvent implements Events.MCVillagerReplenishTradeEvent {
 
         VillagerReplenishTradeEvent vrte;
 
@@ -1301,8 +1347,8 @@ public class AbstractionEvent {
         }
 
         @Override
-        public CInt getBonus() {
-            return new CInt(vrte.getBonus(), Target.UNKNOWN);
+        public int getBonus() {
+            return vrte.getBonus();
         }
 
         @Override
@@ -1341,7 +1387,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCCreeperPowerEvent implements MCCreeperPowerEvent {
+    public static class BukkitMCCreeperPowerEvent implements Events.MCCreeperPowerEvent {
 
         CreeperPowerEvent cpe;
 
@@ -1380,7 +1426,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCItemBreakEvent implements MCItemBreakEvent {
+    public static class BukkitMCItemBreakEvent implements Events.MCItemBreakEvent {
 
         PlayerItemBreakEvent pibe;
 
@@ -1404,7 +1450,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCPlayerAdvancementDoneEvent implements MCPlayerAdvancementDoneEvent {
+    public static class BukkitMCPlayerAdvancementDoneEvent implements Events.MCPlayerAdvancementDoneEvent {
 
         PlayerAdvancementDoneEvent pade;
 
@@ -1428,7 +1474,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCPlayerBucketFillEvent implements MCPlayerBucketEvent {
+    public static class BukkitMCPlayerBucketFillEvent implements Events.MCPlayerBucketEvent {
 
         PlayerBucketFillEvent pbe;
 
@@ -1483,7 +1529,7 @@ public class AbstractionEvent {
         }
     }
 
-    public static class BukkitMCPlayerBucketEmptyEvent implements MCPlayerBucketEvent {
+    public static class BukkitMCPlayerBucketEmptyEvent implements Events.MCPlayerBucketEvent {
 
         PlayerBucketEmptyEvent pbe;
 

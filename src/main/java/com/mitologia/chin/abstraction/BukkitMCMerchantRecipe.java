@@ -84,6 +84,11 @@ public class BukkitMCMerchantRecipe extends BukkitMCRecipe implements MCMerchant
 	}
 
 	@Override
+	public String getKey() {
+		return null;
+	}
+
+	@Override
 	public Object getHandle() {
 		return mr;
 	}
