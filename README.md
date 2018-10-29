@@ -55,6 +55,66 @@ is_swimming, entity
 entity, newanger[can modify], target
 ### player_riptide
 item, player
+### area_effect_cloud_apply
+affected, entity
+### brew
+inventory, level, block
+### brewing_stand_fuel
+fuel, fuelpower[can modify], block, consuming[can modify]
+### cauldron_level_change
+entity, newlevel[can modify], oldlevel, reason, block
+### egg_throw
+egg, player, hatchingtype[can modify], hatchnum[can modify], hatching[can modify]
+### entity_air_change
+amount[can modify], entity
+### entity_breed
+bredwith, breeder, entity, getexp[can modify], getfather, getmother
+### entity_resurrect
+entity
+### entity_shoot_bow
+bow, entity, force, projectile[can modify]
+### entity_tame
+entity, owner
+### furnace_burn
+burntime[can modify], fuel, block, is_burning[can modify]
+### furnace_extract
+exp[can modify], amount, itemtype, player, block
+### furnace_smelt
+result[can modify], source, block
+### item_merge
+entity, target
+### leaves_decay
+block
+### locale_change
+locale, player
+### player_bucket_fill
+blockclicked, blockface, bucket, item[can_modify], palyer
+### player_bucket_empty
+blockclicked, blockface, bucket, item[can_modify], palyer
+### resourcepack_status
+player, status
+### player_statistic_increment
+entitytype, material, previousvalue, newvalue, statistic, player
+### player_velocity
+velocity[can modify], player
+### pre_anvil
+result[can modify], cost[can modify], renametext
+### sheep_dye_wool
+color[can modify], entity
+### sheep_regrow_wool
+entity
+### slime_split
+count[can modify], entity
+### villager_acquire_trade
+entity, recipe[can modify]
+### villager_replenish_trade
+bonus[can modify], entity, recipe[can modify]
+### creeper_power
+cause, entity, lightning
+### item_break
+item, player
+### player_advancement_done
+advancement, player
 ### map_initialize
 map
 
@@ -67,7 +127,7 @@ map
     
     @renderer = create_renderer();
     set_renderer(@renderer, closure(@mapview, @mapcanvas, @player){
-      if(@mapview[X] == 0 && @view[Z] == 0){
+      if(@mapview[X] == 0 && @mapview[Z] == 0){
         @jpg = create_image('image.jpg');
         draw_canvas(@mapcanvas[key], 0, 0, @jpg);
       }
